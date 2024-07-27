@@ -1,22 +1,264 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Calculadora</title>
+  <title>Calculadora de David Romeu Esteve</title>
   <meta charset="utf-8">
   <script type="text/javascript">
+    let calculo_binario = [];
+    let array_input = [];
+
     const vaciar = () => {
       document.getElementById("pantalla").value = "";
+      document.getElementById("info").innerHTML = "Info sobre el número";
     }
 
     const cuadrado = () => {
       let num = document.getElementById("pantalla");
-      num.value = num.value * num.value;
+      if (validar('unitaria',num.value)) {
+        num.value = num.value * num.value;
+        rellenar_info(num.value);
+      }
+      else {
+        num.value = 'Error';
+        let info = document.getElementById("info");
+        info.innerHTML = 'Info: Número no válido';
+      }
+    }
+
+    const rellenar_info = (x) => {
+      let info = document.getElementById("info");
+      if (x < 100) info.innerHTML = 'Info: El resultado es menor que 100';
+      else if (x > 200) info.innerHTML = 'Info: El resultado es superior a 200';
+      else info.innerHTML = 'Info: El resultado está entre 100 y 200';
+    }
+
+    const mod = () => {
+      let num = document.getElementById("pantalla");
+      if (validar('unitaria',num.value)) {
+        if (num.value < 0) num.value = -num.value;
+        rellenar_info(num.value);
+      }
+      else {
+        num.value = 'Error';
+        let info = document.getElementById("info");
+        info.innerHTML = 'Info: Número no válido';
+      }
+    }
+
+    const fact = () => {
+      let num = document.getElementById("pantalla");
+      if (validar('unitaria',num.value)) {
+        let x = 1;
+        for (let y = 2; y <= num.value; ++y){
+          x *= y; 
+        }
+        num.value = x;
+        rellenar_info(num.value);
+      }
+      else {
+        num.value = 'Error';
+        let info = document.getElementById("info");
+        info.innerHTML = 'Info: Número no válido';
+      }
+    }
+
+    const add = () => {
+      let num = document.getElementById("pantalla");
+      if (validar('binaria',num.value)) {
+        calculo_binario[0] = num.value;
+        calculo_binario[1] = '+';
+      }
+      else {
+        num.value = 'Error';
+        let info = document.getElementById("info");
+        info.innerHTML = 'Info: Número no válido';
+      }
+    }
+
+    const substract = () => {
+      let num = document.getElementById("pantalla");
+      if (validar('binaria',num.value)) {
+        calculo_binario[0] = num.value;
+        calculo_binario[1] = '-';
+      }
+      else {
+        num.value = 'Error';
+        let info = document.getElementById("info");
+        info.innerHTML = 'Info: Número no válido';
+      }
+    }
+
+    const mul = () => {
+      let num = document.getElementById("pantalla");
+      if (validar('binaria',num.value)) {
+        calculo_binario[0] = num.value;
+        calculo_binario[1] = '*';
+      }
+      else {
+        num.value = 'Error';
+        let info = document.getElementById("info");
+        info.innerHTML = 'Info: Número no válido';
+      }
+    }
+
+    const div = () => {
+      let num = document.getElementById("pantalla");
+      if (validar('binaria',num.value)) {
+        calculo_binario[0] = num.value;
+        calculo_binario[1] = '/';
+      }
+      else {
+        num.value = 'Error';
+        let info = document.getElementById("info");
+        info.innerHTML = 'Info: Número no válido';
+      }
+    }
+
+    const eq = () => {
+      let num = document.getElementById("pantalla");
+      if (validar('binaria',num.value)) {
+        switch (calculo_binario[1]){
+        case '+': {
+          num.value = +calculo_binario[0] + +num.value;
+          rellenar_info(num.value);
+        }
+        break;
+        case '-': {
+          num.value = +calculo_binario[0] - +num.value;
+          rellenar_info(num.value);
+        }
+        break;
+        case '*': {
+          num.value = +calculo_binario[0] * +num.value;
+          rellenar_info(num.value);
+        }
+        break;
+        case '/': {
+          num.value = +calculo_binario[0] / +num.value;
+          rellenar_info(num.value);
+        }
+        break;
+        default:
+        }
+      }
+      else {
+        num.value = 'Error';
+        let info = document.getElementById("info");
+        info.innerHTML = 'Info: Número no válido';
+      }
+      calculo_binario = [];
+    }
+
+    const sumatorio = () => {
+      let num = document.getElementById("pantalla");
+      if (validar('CSV',num.value)) {
+        let list = num.value.split(",");
+        let i = 0, acc = 0;
+        while (i < list.length) acc += +list[i++];
+        num.value = acc;
+        rellenar_info(num.value);
+      }
+      else {
+        num.value = 'Error';
+        let info = document.getElementById("info");
+        info.innerHTML = 'Info: Número o lista de números no válido';
+      }
+    }
+
+    const ordenar = () => {
+      let num = document.getElementById("pantalla");
+      if (validar('CSV',num.value)) {
+        let list = num.value.split(",");
+        list.sort((a, b) => a - b);
+        num.value = list;
+        let info = document.getElementById("info");
+        info.innerHTML = 'Lista de números en orden ascendente';
+      }
+      else {
+        num.value = 'Error';
+        let info = document.getElementById("info");
+        info.innerHTML = 'Info: Número o lista de números no válido';
+      }
+    }
+
+    const revertir = () => {
+      let num = document.getElementById("pantalla");
+      if (validar('CSV',num.value)) {
+        let list = num.value.split(",");
+        list.reverse();
+        num.value = list;
+        let info = document.getElementById("info");
+        info.innerHTML = 'Lista de números en orden invertido';
+      }
+      else {
+        num.value = 'Error';
+        let info = document.getElementById("info");
+        info.innerHTML = 'Info: Número o lista de números no válido';
+      }
+    }
+
+    const quitar = () => {
+      let num = document.getElementById("pantalla");
+      if (validar('CSV',num.value)) {
+        let list = num.value.split(",");
+        list.pop();
+        num.value = list;
+        let info = document.getElementById("info");
+        info.innerHTML = 'Se ha quitado el último número de la lista';
+      }
+      else {
+        num.value = 'Error';
+        let info = document.getElementById("info");
+        info.innerHTML = 'Info: Número o lista de números no válido';
+      }
+    }
+
+    const validar = (tipo_calculo,valor) => {
+      switch(tipo_calculo){
+        case 'unitaria':
+        case 'binaria': {
+          if (isNaN(valor) || valor === '') return false;
+          else return true;
+        }
+        break;
+        case 'CSV':{
+          if (validar_array(valor)) return true
+          else return false;
+        }
+        break;
+        default: return false;
+      }
+    }
+
+    const validar_array = (array) => {
+      let list = array.split(",");
+      let i = 0;
+      while (i < list.length) {
+        if (isNaN(list[i]) || list[i] === '') return false;
+        i++; 
+      }
+      return true;
     }
   </script>
 </head>
 <body>
   Número:
   <input type="text" id="pantalla" onclick="vaciar()">
+  <h2 id="info" class="grande" title="Info sobre el número">Info sobre el número</h2>
+  <h3 id="titulo_botones" title="Operaciones unitarias">Operaciones unitarias</h3>
   <button id="cuadrado" onclick="cuadrado()">x<sup>2</sup></button>
- </body>
+  <button id="modulo" onclick="mod()">Mod</button>
+  <button id="factorial" onclick="fact()">n!</button>
+  <h3 id="titulo_botones" title="Operaciones binarias">Operaciones binarias</h3>
+  <button id="suma" onclick="add()">+</button>
+  <button id="resta" onclick="substract()">-</button>
+  <button id="multiplicacion" onclick="mul()">*</button>
+  <button id="division" onclick="div()">/</button>
+  <button id="igual" onclick="eq()">=</button>
+  <h3 id="titulo_botones" title="Operaciones binarias">Operaciones CSV</h3>
+  <button id="sumatorio" onclick="sumatorio()">&#8512x</button>
+  <button id="ordenar" onclick="ordenar()">ordenar</button>
+  <button id="revertir" onclick="revertir()">revertir</button>
+  <button id="quitar" onclick="quitar()">quitar</button>
+</body>
 </html>
